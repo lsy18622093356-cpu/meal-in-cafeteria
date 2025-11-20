@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Have Meal in Cafeteria – Healthy Suggestions</title>
+  <style>
+    :root{
+      --bg:#0f172a;
+      --panel:rgba(15,23,42,0.92);
+      --card:#020617;
+      --ring:#1e293b;
+      --muted:#94a3b8;
+      --text:#e5e7eb;
+      --brand:#22c55e;
+      --accent:#38bdf8;
+    }
+    *{box-sizing:border-box;}
+    html,body{height:100%;}
+    body{
+      margin:0;
+      color:var(--text);
+      font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+      /* 新背景：柔和渐变 + 食堂氛围照片 */
+      background:
+        linear-gradient(180deg,rgba(15,23,42,0.9),rgba(15,23,42,0.96)),
+        url("https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=1600&q=80")
+        center/cover fixed no-repeat;
+    }
+    .container{max-width:900px;margin:24px auto;padding:16px;}
+    .app{
+      background:var(--panel);
+      border:1px solid var(--ring);
+      border-radius:18px;
+      box-shadow:0 24px 50px rgba(15,23,42,.9);
+      overflow:hidden;
+      backdrop-filter:blur(14px);
+    }
+    header{
+      padding:16px 18px;
+      border-bottom:1px solid var(--ring);
+      background:linear-gradient(135deg,#0b1220,#020617 55%,#022c22);
+    }
+    header h1{margin:0;font-size:20px;font-weight:700;}
+    .sub{font-size:13px;color:var(--muted);margin-top:4px;}
+    .top-actions{
+      margin-top:10px;
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .btn-link{
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+      font-size:13px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid var(--accent);
+      color:#e0f2fe;
+      text-decoration:none;
+      background:rgba(15,23,42,0.7);
+      cursor:pointer;
+    }
+    .btn-link:hover{background:#0f172a;}
+
+    main{padding:16px 18px 20px 18px;display:flex;flex-direction:column;gap:18px;}
+
+    .card{
+      background:radial-gradient(circle at top,#020617 0,#020617 55%);
+      border:1px solid var(--ring);
+      border-radius:18px;
+      padding:12px 14px 14px 14px;
+      box-shadow:0 14px 30px rgba(15,23,42,0.7);
+    }
+    .card h2{margin:0 0 6px 0;font-size:16px;}
+    .card h3{margin:0 0 6px 0;font-size:15px;}
+
+    .pill-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;}
+    .pill{
+      border-radius:999px;
+      border:1px solid var(--ring);
+      padding:4px 8px;
+      font-size:12px;
+      color:#e5e7eb;
+      background:rgba(15,23,42,0.7);
+    }
+    .pill.bad{border-color:#ef4444;color:#fecaca;}
+    .pill.good{border-color:#22c55e;color:#bbf7d0;}
+
+    .diet-list{margin-top:6px;font-size:13px;color:var(--muted);}
+    .diet-item{margin-bottom:4px;}
+
+    .recipes{display:grid;grid-template-columns:1fr;gap:12px;margin-top:8px;}
+    @media (min-width:720px){
+      .recipes{grid-template-columns:1fr 1fr;}
+    }
+    .recipe-card{
+      background:linear-gradient(180deg,#020617,#020617 65%,#04101b);
+      border-radius:16px;
+      border:1px solid var(--ring);
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      height:100%;
+    }
+    .recipe-img-wrap{
+      position:relative;
+      width:100%;
+      padding-top:60%; /* 5:3 比例 */
+      overflow:hidden;
+    }
+    .recipe-img-wrap img{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      transform:scale(1.02);
+      transition:transform 0.3s ease;
+    }
+    .recipe-card:hover .recipe-img-wrap img{
+      transform:scale(1.06);
+    }
+    .recipe-body{
+      padding:10px 11px 11px 11px;
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+      flex:1;
+    }
+    .recipe-title{font-size:14px;font-weight:600;margin-bottom:2px;}
+    .macros{display:flex;flex-wrap:wrap;gap:4px;margin:4px 0;}
+    .macros .pill{font-size:11px;padding:3px 7px;}
+    .reason{font-size:12px;color:var(--muted);margin-bottom:4px;}
+    .footer-note{font-size:12px;color:var(--muted);margin-top:4px;}
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="app">
+      <header>
+        <h1>Have Meal in Cafeteria</h1>
+        <div class="sub">
+          Based on your recent <strong>Health Calendar</strong> diet logs, here are healthier cafeteria-style choices with better balance and not-too-high calories.
+        </div>
+        <div class="top-actions">
+          <!-- 返回 Health Calendar（你可以改成别的链接） -->
+          <a class="btn-link" href="https://lsy18622093356-cpu.github.io/healthcalendar/" target="_blank" rel="noopener noreferrer">
+            ← Back to Health Calendar
+          </a>
+        </div>
+      </header>
+
+      <main>
+        <!-- 最近饮食总结 -->
+        <section class="card" id="summaryCard">
+          <h2>Your recent eating pattern (last 6 days)</h2>
+          <div id="summaryText" class="sub">Loading diet records from your calendar…</div>
+          <div class="pill-row" id="statPills"></div>
+          <div class="diet-list" id="dietHistory"></div>
+        </section>
+
+        <!-- 今日食堂吃饭建议 -->
+        <section class="card">
+          <h2>Cafeteria meal suggestions for today</h2>
+          <div id="suggestionIntro" class="sub">
+            We will suggest cafeteria-style plates that are more balanced and not too high in calories.
+          </div>
+          <div class="recipes" id="recipeList"></div>
+          <div class="footer-note">
+            Tip: After you eat, write down what you chose in the calendar. This will make future suggestions more accurate.
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    // ===== Shared storage key with Health Calendar =====
+    const STORE_KEY = 'healthCalendarData.v1';
+
+    function loadCalendarData(){
+      try{
+        return JSON.parse(localStorage.getItem(STORE_KEY)) || {};
+      }catch{
+        return {};
+      }
+    }
+
+    // 最近 6 天有 diet 记录的条目
+    function getRecentDietEntries(data, limitDays){
+      const today = new Date();
+      today.setHours(0,0,0,0);
+
+      const keys = Object.keys(data || {})
+        .filter(k => data[k] && data[k].diet && data[k].diet.trim())
+        .sort((a,b) => new Date(b) - new Date(a)); // newest first
+
+      const result = [];
+      for(const k of keys){
+        const d = new Date(k);
+        if(d > today) continue; // ignore future dates
+        result.push({ date: k, text: data[k].diet.trim() });
+        if(result.length >= limitDays) break;
+      }
+      return result;
+    }
+
+    // 简单词匹配分析饮食模式
+    function analyzeDietHistory(entries){
+      const stats = {veg:0, fruit:0, fried:0, sugary:0, whole:0, lean:0, red:0};
+      const hasAny = (text, words) => words.some(w => text.includes(w));
+
+      entries.forEach(e => {
+        const t = e.text.toLowerCase();
+        if(hasAny(t,['salad','broccoli','spinach','vegetable','veggie','kale','cabbage','lettuce','green bean','carrot'])) stats.veg++;
+        if(hasAny(t,['apple','banana','berry','grape','orange','fruit','pear','peach'])) stats.fruit++;
+        if(hasAny(t,['fried','fries','deep-fried','tempura'])) stats.fried++;
+        if(hasAny(t,['cake','cookie','dessert','ice cream','candy','soda','sweet','donut','doughnut'])) stats.sugary++;
+        if(hasAny(t,['brown rice','quinoa','oat','oatmeal','whole wheat','whole-wheat','whole grain','whole-grain'])) stats.whole++;
+        if(hasAny(t,['chicken breast','chicken','turkey','fish','salmon','tuna','shrimp'])) stats.lean++;
+        if(hasAny(t,['beef','pork','steak','burger','bacon'])) stats.red++;
+      });
+      return stats;
+    }
+
+    // ===== Cafeteria “plates” 数据（带图片） =====
+    const cafeteriaMeals = [
+      {
+        name:'Grilled chicken plate (brown rice + steamed broccoli)',
+        kcal:620, carb:70, fat:12, protein:45,
+        meta:{veg:true, whole:true, lean:true, fried:false, lowSugar:true},
+        desc:'Ask for grilled chicken (no skin), brown rice, and a big serving of steamed veggies. Avoid creamy sauces.',
+        img:'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=800&q=80'
+      },
+      {
+        name:'Salad bar plate with grilled chicken and beans',
+        kcal:550, carb:50, fat:16, protein:35,
+        meta:{veg:true, whole:false, lean:true, fried:false, lowSugar:true},
+        desc:'Build a salad with mixed greens, beans, and grilled chicken. Use olive oil + vinegar instead of creamy dressing.',
+        img:'https://images.unsplash.com/photo-1550304943-4f24f54ddde9?auto=format&fit=crop&w=800&q=80'
+      },
+      {
+        name:'Veggie bowl: quinoa + roasted vegetables + chickpeas',
+        kcal:590, carb:72, fat:16, protein:26,
+        meta:{veg:true, whole:true, lean:false, fried:false, lowSugar:true},
+        desc:'Choose quinoa or brown rice, lots of vegetables, and chickpeas or other beans. Skip cheese and heavy sauces.',
+        img:'https://images.unsplash.com/photo-1512621776951-0c4e1e0987e8?auto=format&fit=crop&w=800&q=80'
+      },
+      {
+        name:'Salmon bowl: brown rice + salmon + side salad',
+        kcal:650, carb:65, fat:22, protein:34,
+        meta:{veg:true, whole:true, lean:true, fried:false, lowSugar:true},
+        desc:'Pick baked or grilled salmon, add brown rice and a salad. Ask for sauce on the side.',
+        img:'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80'
+      },
+      {
+        name:'Turkey sandwich (whole-grain) + side salad, no fries',
+        kcal:560, carb:60, fat:14, protein:32,
+        meta:{veg:true, whole:true, lean:true, fried:false, lowSugar:true},
+        desc:'Choose whole-grain bread, lean turkey, plenty of veggies inside, and a side salad instead of fries.',
+        img:'https://images.unsplash.com/photo-1604908176997-1251884b08a3?auto=format&fit=crop&w=800&q=80'
+      },
+      {
+        name:'Stir-fry station: mixed veggies + tofu or chicken, light sauce',
+        kcal:600, carb:68, fat:18, protein:30,
+        meta:{veg:true, whole:false, lean:true, fried:false, lowSugar:true},
+        desc:'At a stir-fry station, ask for mostly vegetables, a small portion of rice, and light or no sauce.',
+        img:'https://images.unsplash.com/photo-1514996937319-344454492b37?auto=format&fit=crop&w=800&q=80'
+      }
+    ];
+
+    // 根据最近饮食给餐盘打分
+    function scoreMeal(meal, stats, entryCount){
+      let s = 0;
+
+      // base: 热量适中加分，过高减分
+      if(meal.kcal <= 650) s += 1;
+      if(meal.kcal <= 600) s += 1;
+      if(meal.kcal >= 800) s -= 1;
+
+      if(entryCount > 0){
+        if(stats.veg < 3 && meal.meta.veg) s += 2;         // 蔬菜少 → 多推荐带沙拉、蔬菜的组合
+        if(stats.whole < 2 && meal.meta.whole) s += 1;     // 全谷物少 → 推带 brown rice / whole grain
+        if(stats.fried > 0 && meal.meta.fried === false) s += 1; // 最近有炸物 → 推非炸盘
+        if(stats.red > 2 && meal.meta.lean) s += 1;        // 红肉多 → 推鸡肉、鱼、火鸡
+        if(stats.sugary > 1 && meal.meta.lowSugar) s += 1; // 甜食多 → 推不含甜饮、甜点的组合
+      }
+      return s;
+    }
+
+    // 渲染饮食总结
+    function renderSummary(entries, stats){
+      const summaryText = document.getElementById('summaryText');
+      const pills = document.getElementById('statPills');
+      const history = document.getElementById('dietHistory');
+
+      pills.innerHTML = '';
+      history.innerHTML = '';
+
+      if(entries.length === 0){
+        summaryText.textContent =
+          'We did not find any diet records in your Health Calendar. Please record your meals for a few days so that cafeteria suggestions can be more personal.';
+        return;
+      }
+
+      const n = entries.length;
+      if(n < 6){
+        summaryText.textContent =
+          `We found ${n} day(s) of diet records. Suggestions will be healthy and lower-calorie, but not fully personalized yet.`;
+      }else{
+        summaryText.textContent =
+          'We used your last 6 days of diet records to understand your eating pattern.';
+      }
+
+      function addPill(text, type){
+        const span = document.createElement('span');
+        span.className = 'pill' + (type ? (' ' + type) : '');
+        span.textContent = text;
+        pills.appendChild(span);
+      }
+
+      if(stats.veg === 0) addPill('Very low vegetables', 'bad');
+      else if(stats.veg <= 2) addPill('Could eat more vegetables', 'bad');
+      else addPill('Vegetables ok', 'good');
+
+      if(stats.whole === 0) addPill('No whole grains', 'bad');
+      else if(stats.whole <= 2) addPill('Some whole grains', 'good');
+      else addPill('Good whole-grain intake', 'good');
+
+      if(stats.fried > 0) addPill('Fried food recently', 'bad');
+      if(stats.sugary > 1) addPill('Sweet desserts / sugary drinks', 'bad');
+      if(stats.red > 2) addPill('Red meat often', 'bad');
+      if(stats.lean > 0) addPill('Lean protein present', 'good');
+
+      entries.forEach(e => {
+        const div = document.createElement('div');
+        div.className = 'diet-item';
+        div.textContent = `${e.date}: ${e.text}`;
+        history.appendChild(div);
+      });
+    }
+
+    // 渲染今日食堂建议
+    function renderSuggestions(entries, stats){
+      const list = document.getElementById('recipeList');
+      const intro = document.getElementById('suggestionIntro');
+      list.innerHTML = '';
+
+      const count = entries.length;
+      let numSuggestions;
+
+      if(count === 0){
+        intro.textContent =
+          'No previous diet records found. Here are some general healthy cafeteria plate ideas you can look for:';
+        numSuggestions = 3;
+      }else if(count < 6){
+        intro.textContent =
+          `Only ${count} day(s) of diet recorded. Here are several healthy cafeteria options; pick the one that is easiest to find today:`;
+        numSuggestions = 4;
+      }else{
+        intro.textContent =
+          'Based on your last 6 days of diet, we suggest the following cafeteria plates today:';
+        numSuggestions = 3;
+      }
+
+      const scored = cafeteriaMeals.map(m => ({
+        meal: m,
+        score: scoreMeal(m, stats, count)
+      }));
+      scored.sort((a,b) => b.score - a.score);
+      const top = scored.slice(0, numSuggestions);
+
+      top.forEach(({meal}) => {
+        const card = document.createElement('div');
+        card.className = 'recipe-card';
+
+        const wrap = document.createElement('div');
+        wrap.className = 'recipe-img-wrap';
+        const img = document.createElement('img');
+        img.src = meal.img;
+        img.alt = meal.name;
+        wrap.appendChild(img);
+
+        const body = document.createElement('div');
+        body.className = 'recipe-body';
+
+        const reasons = [];
+        if(meal.meta.veg) reasons.push('adds vegetables');
+        if(meal.meta.whole) reasons.push('uses whole grains');
+        if(meal.meta.lean) reasons.push('uses lean protein');
+        if(meal.kcal <= 650) reasons.push('keeps calories reasonable');
+        if(meal.meta.lowSugar) reasons.push('keeps sugar lower');
+
+        const reasonText = reasons.length
+          ? 'Reason: ' + reasons.join(', ') + '.'
+          : '';
+
+        body.innerHTML = `
+          <div class="recipe-title">${meal.name}</div>
+          ${meal.desc ? `<div class="reason">${meal.desc}</div>` : ''}
+          ${reasonText ? `<div class="reason">${reasonText}</div>` : ''}
+          <div class="macros">
+            <span class="pill">${meal.kcal} kcal</span>
+            <span class="pill">Carbs ${meal.carb} g</span>
+            <span class="pill">Fat ${meal.fat} g</span>
+            <span class="pill">Protein ${meal.protein} g</span>
+          </div>
+        `;
+
+        card.appendChild(wrap);
+        card.appendChild(body);
+        list.appendChild(card);
+      });
+    }
+
+    // ===== 初始化 =====
+    (function init(){
+      const data = loadCalendarData();
+      const entries = getRecentDietEntries(data, 6);
+      const stats = analyzeDietHistory(entries);
+      renderSummary(entries, stats);
+      renderSuggestions(entries, stats);
+    })();
+  </script>
+</body>
+</html>
